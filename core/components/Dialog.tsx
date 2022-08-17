@@ -48,14 +48,14 @@ const Dialog = ({ messageDetail, users }: TDialog) => {
 
   return (
     <>
-      <div key={messageDetail.id} sx={{ width: { xs: "100%", md: 700 } }}>
+      <Box key={messageDetail.id} sx={{ width: { xs: "100%", md: 700 } }}>
         <Link href="#" sx={{ textDecoration: "none", mb: 4 }}>
           <Card
             sx={{
               boxShadow: "none",
               borderTop: "1px solid rgb(229, 231, 235)",
               maxWidth: { md: 700 },
-              minWidth: 700,
+              minWidth: {md:700},
             }}
           >
             <CardHeader
@@ -76,7 +76,7 @@ const Dialog = ({ messageDetail, users }: TDialog) => {
               }
               title={
                 <Typography
-                  variant="captipn"
+                  variant="caption"
                   sx={{
                     display: "flex",
                     alignItems: "center",
@@ -97,14 +97,14 @@ const Dialog = ({ messageDetail, users }: TDialog) => {
                   fontSize: "14px",
                 }}
               >
-                <div
+                <Box
                   dangerouslySetInnerHTML={{ __html: parseEmojis(message) }}
-                ></div>
+                ></Box>
               </Box>
             </CardContent>
           </Card>
         </Link>
-      </div>
+      </Box>
     </>
   );
 };

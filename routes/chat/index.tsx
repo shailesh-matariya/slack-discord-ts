@@ -80,7 +80,7 @@ const Chat = ({ id }: any) => {
             height: "calc(100vh - 80px)",
           }}
         >
-          <Container sx={{ px: 6 }}>
+          <Container sx={{ px: {md:6,xs:2}}}>
             <ConversationWrapper>
               <Conversation
                 channel={selectedChannel}

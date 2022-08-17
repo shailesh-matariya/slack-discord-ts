@@ -8,7 +8,7 @@ const Conversation = ({ channel, messages, users }: TConversation) => {
       <Typography
         variant="subtitle2"
         color="text.secondary"
-        sx={{ mt: 3, mb: 2, textAlign: "center" }}
+        sx={{ mt: {md:3}, mb:2, textAlign: "center" }}
       >
         This is the beginning of the #{channel?.name} channel
       </Typography>
@@ -17,7 +17,7 @@ const Conversation = ({ channel, messages, users }: TConversation) => {
         <Dialog key={item.id} messageDetail={item} users={users} />
       ))}
       {/* <iframe width="550" height="240" frameBorder="0"
-        src="https://file-examples.com/storage/fe2ef7477862f581f9ce264/2017/04/file_example_MP4_640_3MG.mp4">
+        src="https://www.youtube.com/watch?v=5Eqb_-j3FDA&list=TLPQMTcwODIwMjJXQAQpZ_gqnA&index=2&ab_channel=CokeStudio">
       </iframe>
 
       <iframe width="550" height="240" frameBorder="0"

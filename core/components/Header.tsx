@@ -9,8 +9,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
+import Image from "next/image";
 
-const Search = styled("div")(({ theme }) => ({
+const Search = styled(Box)(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 1),
@@ -18,16 +19,12 @@ const Search = styled("div")(({ theme }) => ({
     backgroundColor: alpha(theme.palette.common.white, 1),
   },
   marginRight: theme.spacing(2),
-  // marginLeft: 0,
   width: "100%",
   color: "lightgray",
-  // [theme.breakpoints.up("sm")]: {
   marginLeft: "20px",
-  // width: 'auto',
-  // },
 }));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
+const SearchIconWrapper = styled(Box)(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: "100%",
   position: "absolute",
@@ -42,7 +39,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
@@ -125,16 +121,18 @@ const Header = () => {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar
         position="static"
         sx={{ backgroundColor: "#1e1e43", boxShadow: "none" }}
       >
         <Toolbar sx={{ Height: 75, padding: 2 }}>
-          <img
+
+          <Image
             alt="complex"
             src="/assets/images/fleetdm-logo.png"
-            height={30}
+            height={40}
+            width={100}
           />
 
           <Search sx={{ display: { xs: "none", md: "inline-block" } }}>
@@ -148,7 +146,7 @@ const Header = () => {
             />
           </Search>
 
-          <div style={{ marginLeft: "auto", display: "inline-flex" }}>
+          <Box sx={{ marginLeft: "auto", display: "inline-flex" }}>
             {navItems.map((item) => (
               <Button
                 key={item}
@@ -164,19 +162,18 @@ const Header = () => {
                 {item}
               </Button>
             ))}
-          </div>
+          </Box>
 
           <Box sx={{ display: { xs: "none", sm: "inline-flex" }, ml: 2 }}>
             <Button
-              spacing={2}
-              style={{ display: "inline-flex", backgroundColor: "white" }}
+              sx={{ display: "inline-flex", backgroundColor: "white" ,width:180,height:35}}
             >
-              <img alt="complex" src="/assets/images/slack.png" height={15} />
+              <Image alt="complex" src="/assets/images/slack.png" height={15} width={15}/>
               <Typography
                 sx={{
                   textTransform: "none",
                   ml: 1,
-                  fontWeight: "bold",
+                  fontWeight: "semibold",
                   color: "blue",
                   fontSize: "small",
                 }}
@@ -194,10 +191,9 @@ const Header = () => {
             }}
           >
             <Button
-              spacing={2}
-              style={{ display: "inline-flex", backgroundColor: "white" }}
+              sx={{ display: "inline-flex", backgroundColor: "white" }}
             >
-              <img alt="complex" src="/assets/images/slack.png" height={15} />
+              <Image alt="complex" src="/assets/images/slack.png"  height={15} width={15}/>
               <Typography
                 sx={{
                   textTransform: "none",
