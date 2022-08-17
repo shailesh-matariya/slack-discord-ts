@@ -72,12 +72,12 @@ const ChannellList = styled(Box)(({ theme }) => ({
 }));
 
 const ChannelTitle = styled(Box)(({ theme }) => ({
-  [theme.breakpoints.up("md")]: {
-    paddingLeft: "18px",
-  },
+
   fontWeight: "bold",
   [theme.breakpoints.up("md")]: {
-    marginBottom: "15px",
+    marginBottom: 0,
+    paddingLeft: "18px",
+
   },
   marginBottom: "5px",
 }));
@@ -201,13 +201,13 @@ const Channels = (channels: TChannels) => {
               <Link
                 href="#!"
                 underline="none"
-                style={{
+                sx={{
                   paddingLeft: "27px",
                   opacity: "0.7",
                   fontSize: "small",
                   color: "black",
+                  display: { xs: "none", md: "block" }
                 }}
-                sx={{ display: { xs: "none", md: "block" } }}
                 target="_blank"
               >
                 {"Powered by Linen"}

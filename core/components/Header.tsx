@@ -198,7 +198,7 @@ const Header = () => {
                 sx={{
                   textTransform: "none",
                   ml: 1,
-                  fontWeight: "bold",
+                  fontWeight: "semibold",
                   color: "blue",
                   fontSize: "small",
                 }}

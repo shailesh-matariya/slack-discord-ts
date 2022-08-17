@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import Head from 'next/head';
 import Header from '../components/Header';
 
@@ -11,9 +12,9 @@ const AppLayout = ({ children }: TProps) => {
       <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
     </Head>
     <Header />
-    <div className="container">
+    <Box className="container">
       {children}
-    </div>
+    </Box>
   </>
 }
 
