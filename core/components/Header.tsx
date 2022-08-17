@@ -124,8 +124,6 @@ const Header = () => {
     </Menu>
   );
 
-  console.log('HEADR');
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -133,23 +131,12 @@ const Header = () => {
         sx={{ backgroundColor: "#1e1e43", boxShadow: "none" }}
       >
         <Toolbar sx={{ Height: 75, padding: 2 }}>
-          {/* <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2, display: { xs: "inline-flex", sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton> */}
-
           <img
             alt="complex"
             src="/assets/images/fleetdm-logo.png"
             height={30}
           />
 
-          {/* <div sx={{ position: "relative" }}> */}
           <Search sx={{ display: { xs: "none", md: "inline-block" } }}>
             <SearchIconWrapper>
               <SearchIcon />
@@ -161,7 +148,6 @@ const Header = () => {
             />
           </Search>
 
-          {/* </div> */}
           <div style={{ marginLeft: "auto", display: "inline-flex" }}>
             {navItems.map((item) => (
               <Button

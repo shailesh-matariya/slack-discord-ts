@@ -37,7 +37,6 @@ const Chat = ({ id }: any) => {
         `/channel-messages?platform=slack&team_id=T03SH2Y8PJM&channel_id=${chId}`
       )
       .then((resp) => setMessages(resp.data.message_collection.data));
-    // setMessages(msgList);
   };
 
   const getUsers = () => {
@@ -49,7 +48,7 @@ const Chat = ({ id }: any) => {
   useEffect(() => {
     getChannels();
     getUsers();
-  }, []);
+  }, [id]);
 
   const ConversationWrapper = styled("div")(({ theme }) => ({
     overflow: "auto",

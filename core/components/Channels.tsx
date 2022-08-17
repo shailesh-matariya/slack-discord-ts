@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FormControl,
   ListItem,
@@ -12,6 +12,8 @@ import Select from "@mui/material/Select";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { TChannel, TChannels } from '../utils/AppTypes';
+import { Box } from '@mui/system';
+import { useRouter } from 'next/router';
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -75,7 +77,6 @@ const ChannelTitle = styled("div")(({ theme }) => ({
 }));
 
 const ChannelCard = styled("div")(({ theme }) => ({
-  background: "#fff",
   [theme.breakpoints.up("md")]: {
     maxWidth: "28rem",
     boxShadow:
@@ -120,88 +121,93 @@ const Channel = ({ id, name }: TChannel) => {
 };
 
 const Channels = (channels: TChannels) => {
-  const [channel, setChannel] = useState("");
-  const [state, setstate] = useState();
+  const router = useRouter();
+  const [channel, setChannel] = useState('');
   const channelList = channels.channels;
+  const { id } = router.query;
+
+  useEffect(() => {
+    if (channelList.length) {
+      let ch;
+      if (!id) {
+        ch = channelList[0];
+      } else {
+        ch = channelList.find((ch: TChannel) => ch.channelId.toString() == id || ch.name == id);
+      }
+
+      if (ch) setChannel(ch.name);
+    }
+  }, [channelList]);
+
   const handleChange = (event: any) => {
     setChannel(event.target.value);
+    router.push(`/chat/${event.target.value}`)
   };
+
 
   return (
     <>
-      <Search sx={{ display: { md: "none", xs: "inline-block" } }}>
-        <SearchIconWrapper>
-          <SearchIcon />
-        </SearchIconWrapper>
-        <StyledInputBase
-          placeholder="Search messages"
-          inputProps={{ "aria-label": "search" }}
-          sx={{ color: "#090707", fontSize: "medium", width: "100%" }}
-        />
-      </Search>
+      <Box sx={{ width: '100%' }}>
+        <Search sx={{ display: { md: "none", xs: "inline-block" } }}>
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+          <StyledInputBase
+            placeholder="Search messages"
+            inputProps={{ "aria-label": "search" }}
+            sx={{ color: "#090707", fontSize: "medium", width: "100%" }}
+          />
+        </Search>
 
-      <ChannellList sx={{ display: "block" }}>
-        <ChannelCard>
-          <div
-            style={{
-              padding: "24px 0",
-              width: "100%",
-            }}
-          >
-            <ChannelTitle>Channels</ChannelTitle>
-            <FormControl
+        <ChannellList sx={{ display: "block" }}>
+          <ChannelCard>
+            <div
               style={{
+                padding: "24px 0",
                 width: "100%",
-                outline: "none",
-                margin: "0 0",
-                backgroundColor: "lightgrey",
               }}
-              sx={{ display: { md: "none" } }}
             >
-              <Select
-                value="{channel}"
-                onChange={handleChange}
-                displayEmpty
-                inputProps={{ "aria-label": "Without label" }}
-              >
+              <ChannelTitle>Channels</ChannelTitle>
+              <FormControl fullWidth>
+                <Select
+                  value={channel}
+                  onChange={handleChange}
+                  displayEmpty
+                  inputProps={{ "aria-label": "Without label" }}
+                  sx={{ display: { md: "none" } }}
+                >
+                  {channelList.map((item: TChannel) => (
+                    <MenuItem key={item.id} value={item.name}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <ChannelWrapper sx={{ display: { xs: "none", md: "block" } }}>
                 {channelList.map((item: TChannel) => (
-                  // <Channel key={item.id} ch={item} />
-                  <MenuItem key={item.id} value={item.name}>
-                    {item.name}
-                  </MenuItem>
+                  <Channel key={item.id} {...item} />
                 ))}
-                {/* <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem> */}
-              </Select>
-            </FormControl>
+              </ChannelWrapper>
 
-            <ChannelWrapper sx={{ display: { xs: "none", md: "block" } }}>
-              {channelList.map((item: TChannel) => (
-                <Channel key={item.id} {...item} />
-              ))}
-            </ChannelWrapper>
-
-            <Link
-              href="#!"
-              underline="none"
-              style={{
-                paddingLeft: "27px",
-                opacity: "0.7",
-                fontSize: "small",
-                color: "black",
-              }}
-              sx={{ display: { xs: "none", md: "block" } }}
-              target="_blank"
-            >
-              {"Powered by Linen"}
-            </Link>
-          </div>
-        </ChannelCard>
-      </ChannellList>
+              <Link
+                href="#!"
+                underline="none"
+                style={{
+                  paddingLeft: "27px",
+                  opacity: "0.7",
+                  fontSize: "small",
+                  color: "black",
+                }}
+                sx={{ display: { xs: "none", md: "block" } }}
+                target="_blank"
+              >
+                {"Powered by Linen"}
+              </Link>
+            </div>
+          </ChannelCard>
+        </ChannellList>
+      </Box>
     </>
   );
 };
