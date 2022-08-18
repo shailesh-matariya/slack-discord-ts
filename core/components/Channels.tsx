@@ -11,9 +11,10 @@ import { styled, alpha } from "@mui/material/styles";
 import Select from "@mui/material/Select";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-import { TChannel, TChannels } from '../utils/AppTypes';
-import { Box } from '@mui/system';
-import { useRouter } from 'next/router';
+import { TChannel, TChannels } from "../utils/AppTypes";
+import { Box } from "@mui/system";
+import { useRouter } from "next/router";
+import { grey } from "@mui/material/colors";
 
 const Search = styled(Box)(({ theme }) => ({
   position: "relative",
@@ -24,10 +25,7 @@ const Search = styled(Box)(({ theme }) => ({
   },
   width: "100%",
   color: "lightgray",
-  [theme.breakpoints.up("md")]: {
-    marginTop: "20px",
-  },
-  marginTop: "10px",
+  margin: "30px 0 15px 0",
   padding: "0 20px",
 }));
 
@@ -44,12 +42,12 @@ const SearchIconWrapper = styled(Box)(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
+  boxShadow: "0 .125rem 0.25rem lightgrey",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
-    border: "1px solid lightgrey",
     borderRadius: "4px",
   },
 }));
@@ -64,41 +62,37 @@ const MenuTitle = styled(Box)(({ theme }) => ({
 }));
 
 const ChannellList = styled(Box)(({ theme }) => ({
-  padding: "0 20px",
   [theme.breakpoints.up("md")]: {
     width: "250px",
   },
-  width:'100%'
+  width: "100%",
 }));
 
 const ChannelTitle = styled(Box)(({ theme }) => ({
-
   fontWeight: "bold",
-  [theme.breakpoints.up("md")]: {
-    marginBottom: 0,
-    paddingLeft: "18px",
 
+  [theme.breakpoints.up("md")]: {
+    marginBottom: "-5px",
+    backgroundColor: grey[100],
+    borderBottom: "1px solid lightgrey",
+    color: grey[800],
   },
-  marginBottom: "5px",
+  color: grey[700],
 }));
 
 const ChannelCard = styled(Box)(({ theme }) => ({
   background: "#fff",
   [theme.breakpoints.up("md")]: {
     maxWidth: "28rem",
-    boxShadow:
-      "0 1px 3px rgb(0 0 0 / 5%), 0 20px 25px -5px rgb(0 0 0 / 5%), 0 10px 10px -5px rgb(0 0 0 / 4%)",
-    borderRadius: "0.25rem",
+    border: "1px solid lightgrey",
   },
   margin: "0 auto",
 }));
 
 const ChannelWrapper = styled(Box)(({ theme }) => ({
-  height: "calc(100vh - 200px)",
+  height: "100vh",
   overflowY: "auto",
-  marginBottom: "10px",
   fontSize: "small",
-  paddingTop: 0,
 }));
 
 const Channel = ({ id, name }: TChannel) => {
@@ -111,9 +105,10 @@ const Channel = ({ id, name }: TChannel) => {
             m: 0,
             borderLeft: 3,
             borderColor: "transparent",
-            padding: "0.5rem 1rem",
+            padding: "0.55rem 2.2rem",
             fontSize: "14px",
             fontWeight: 500,
+            color: grey[700],
             "&:active": {
               borderColor: "#0f5091",
               color: "#0f5091",
@@ -129,8 +124,8 @@ const Channel = ({ id, name }: TChannel) => {
 
 const Channels = (channels: TChannels) => {
   const router = useRouter();
-  const [channel, setChannel] = useState('');
-    const [state, setstate] = useState();
+  const [channel, setChannel] = useState("");
+  const [state, setstate] = useState();
   const channelList = channels.channels;
   const { id } = router.query;
 
@@ -140,7 +135,9 @@ const Channels = (channels: TChannels) => {
       if (!id) {
         ch = channelList[0];
       } else {
-        ch = channelList.find((ch: TChannel) => ch.channelId.toString() == id || ch.name == id);
+        ch = channelList.find(
+          (ch: TChannel) => ch.channelId.toString() == id || ch.name == id
+        );
       }
 
       if (ch) setChannel(ch.name);
@@ -149,13 +146,18 @@ const Channels = (channels: TChannels) => {
 
   const handleChange = (event: any) => {
     setChannel(event.target.value);
-    router.push(`/chat/${event.target.value}`)
+    router.push(`/chat/${event.target.value}`);
   };
-
 
   return (
     <>
-     <Box sx={{ width: '100%' }}>
+      <Box
+        sx={{
+          width: { md: "100%", xs: "91%" },
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
         <Search sx={{ display: { md: "none", xs: "inline-block" } }}>
           <SearchIconWrapper>
             <SearchIcon />
@@ -171,18 +173,28 @@ const Channels = (channels: TChannels) => {
           <ChannelCard>
             <Box
               sx={{
-                padding: {md:"24px 0",xs:"16px 0"},
+                paddingBottom: { md: "24px", xs: "20px" },
                 width: "100%",
               }}
             >
-              <ChannelTitle>Channels</ChannelTitle>
+              <ChannelTitle
+                sx={{ padding: { md: "24px 40px", xs: "10px 25px" } }}
+              >
+                Channels
+              </ChannelTitle>
               <FormControl fullWidth>
                 <Select
                   value={channel}
                   onChange={handleChange}
                   displayEmpty
                   inputProps={{ "aria-label": "Without label" }}
-                  sx={{display: { md: "none" },height:40,backgroundColor:"lightgrey",border:"none" }}
+                  sx={{
+                    display: { md: "none" },
+                    height: 40,
+                    backgroundColor: grey[200],
+                    border: 0,
+                    margin: "0 20px",
+                  }}
                 >
                   {channelList.map((item: TChannel) => (
                     <MenuItem key={item.id} value={item.name}>
@@ -197,122 +209,10 @@ const Channels = (channels: TChannels) => {
                   <Channel key={item.id} {...item} />
                 ))}
               </ChannelWrapper>
-
-              <Link
-                href="#!"
-                underline="none"
-                sx={{
-                  paddingLeft: "27px",
-                  opacity: "0.7",
-                  fontSize: "small",
-                  color: "black",
-                  display: { xs: "none", md: "block" }
-                }}
-                target="_blank"
-              >
-                {"Powered by Linen"}
-              </Link>
             </Box>
           </ChannelCard>
         </ChannellList>
       </Box>
-      {/* <Box sx={{ width: '100%' }}>
-        <Search sx={{ display: { md: "none", xs: "inline-block" } }}>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Search messages"
-            inputProps={{ "aria-label": "search" }}
-            sx={{ color: "#090707", fontSize: "medium", width: "100%" }}
-          />
-        </Search>
-
-        <ChannellList sx={{ display: "block" }}>
-          <ChannelCard>
-    
-      <Search sx={{ display: { md: "none", xs: "inline-block" } }}>
-        <SearchIconWrapper>
-          <SearchIcon />
-        </SearchIconWrapper>
-        <StyledInputBase
-          placeholder="Search messages"
-          inputProps={{ "aria-label": "search" }}
-          sx={{ color: "#090707", fontSize: "medium", width: "100%" }}
-        />
-      </Search>
-
-      <ChannellList sx={{ display: "block" }}>
-        <ChannelCard>
-          <Box
-            sx={{
-              padding: "24px 0",
-              width: "100%",
-            }}
-          >
-            <ChannelTitle>Channels</ChannelTitle>
-              <ChannelTitle>Channels</ChannelTitle>
-              <FormControl fullWidth>
-                <Select
-                  value={channel}
-                  onChange={handleChange}
-                  displayEmpty
-                  inputProps={{ "aria-label": "Without label" }}
-                  sx={{ display: { md: "none" } }}
-                >
-                  {channelList.map((item: TChannel) => (
-                    <MenuItem key={item.id} value={item.name}>
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <ChannelWrapper sx={{ display: { xs: "none", md: "block" } }}>
-                {channelList.map((item: TChannel) => (
-                  <Channel key={item.id} {...item} />
-                ))}
-              </ChannelWrapper>
-              <Link
-                href="#!"
-                underline="none"
-                style={{
-                  paddingLeft: "27px",
-                  opacity: "0.7",
-                  fontSize: "small",
-                  color: "black",
-                }}
-                sx={{ display: { xs: "none", md: "block" } }}
-                target="_blank"
-              >
-                {"Powered by Linen"}
-              </Link>
-          </Box>
-          </ChannelCard>
-        </ChannellList>
-          
-            <ChannelWrapper sx={{ display: { xs: "none", md: "block" } }}>
-              {channelList.map((item: TChannel) => (
-                <Channel key={item.id} {...item} />
-              ))}
-            </ChannelWrapper>
-
-            <Link
-              href="#!"
-              underline="none"
-              sx={{
-                paddingLeft: "27px",
-                opacity: "0.7",
-                fontSize: "small",
-                color: "black",
-                display: { xs: "none", md: "block" }
-              }}
-              target="_blank"
-            >
-              {"Powered by Linen"}
-            </Link>
-
-          </Box> */}
-        
     </>
   );
 };

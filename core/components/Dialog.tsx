@@ -6,12 +6,12 @@ import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
+import { grey, red } from "@mui/material/colors";
 import { Box } from "@mui/system";
 import { toArray } from "react-emoji-render";
 import moment from "moment";
-import { TDialog, TUser } from '../utils/AppTypes';
-import { StyledComponent } from '@emotion/styled';
+import { TDialog, TUser } from "../utils/AppTypes";
+import { StyledComponent } from "@emotion/styled";
 
 const ExpandMore = styled((props) => {
   return <IconButton {...props} sx={{ fontSize: 6 }} />;
@@ -22,14 +22,14 @@ const ExpandMore = styled((props) => {
 
 const Dialog = ({ messageDetail, users }: TDialog) => {
   const usersMap: any = {};
-  users.forEach(user => {
+  users.forEach((user) => {
     usersMap[user.userId] = user;
   });
 
   const user = usersMap[messageDetail.userId];
   const msg = messageDetail.message;
   const message = msg.replace(/<@(.*?)>/g, function replacer(match, p1) {
-    return `<strong>@${usersMap[p1]?.username}</strong>`;
+    return `<strong>@${usersMap[p1]?.name}</strong>`;
   });
 
   const parseEmojis: any = (value: any) => {
@@ -48,14 +48,18 @@ const Dialog = ({ messageDetail, users }: TDialog) => {
 
   return (
     <>
-      <Box key={messageDetail.id} sx={{ width: { xs: "100%", md: 700 } }}>
+      <Box key={messageDetail.id} sx={{ width: { xs: "100%", md: 600 } }}>
         <Link href="#" sx={{ textDecoration: "none", mb: 4 }}>
           <Card
+            variant="outlined"
             sx={{
-              boxShadow: "none",
-              borderTop: "1px solid rgb(229, 231, 235)",
-              maxWidth: { md: 700 },
-              minWidth: {md:700},
+              marginBottom: "20px",
+              maxWidth: { md: 600 },
+              minWidth: { md: 600 },
+              "&:hover": {
+                boxShadow:
+                  "0 4px 8px 0 rgb(151 151 151 / 20%), 0 6px 20px 0 rgb(131 127 127 / 19%)",
+              },
             }}
           >
             <CardHeader
@@ -69,7 +73,7 @@ const Dialog = ({ messageDetail, users }: TDialog) => {
               action={
                 <Typography
                   variant="subtitle2"
-                  sx={{ fontWeight: 400, color: "#999999" }}
+                  sx={{ fontWeight: 400, color: "#999999", marginRight: "7px" }}
                 >
                   {moment(messageDetail?.ts * 1000).fromNow()}
                 </Typography>
@@ -80,10 +84,11 @@ const Dialog = ({ messageDetail, users }: TDialog) => {
                   sx={{
                     display: "flex",
                     alignItems: "center",
-                    fontWeight: 500,
+                    fontWeight: 600,
+                    fontSize: "14px",
                   }}
                 >
-                  {user?.username}
+                  {user?.name}
                 </Typography>
               }
               sx={{ alignItems: "flex-start", pb: 0 }}
@@ -92,9 +97,9 @@ const Dialog = ({ messageDetail, users }: TDialog) => {
             <CardContent sx={{ p: 0, ml: 8, pr: 1 }}>
               <Box
                 sx={{
-                  color: "text.primary",
+                  color: grey[800],
                   fontWeight: 400,
-                  fontSize: "14px",
+                  fontSize: "13px",
                 }}
               >
                 <Box
