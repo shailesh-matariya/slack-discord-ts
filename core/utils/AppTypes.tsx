@@ -6,6 +6,7 @@ export type TChannel = {
   id: number;
   channelId: number;
   name: string;
+  selected: boolean;
 };
 
 export type TChannels = {

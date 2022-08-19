@@ -6,7 +6,6 @@ import {
   ListItemText,
   MenuItem,
 } from "@mui/material";
-import Link from "@mui/material/Link";
 import { styled, alpha } from "@mui/material/styles";
 import Select from "@mui/material/Select";
 import SearchIcon from "@mui/icons-material/Search";
@@ -52,15 +51,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const MenuTitle = styled(Box)(({ theme }) => ({
-  padding: "20px 0 0",
-  backgroundColor: "grey",
-  "&:focus": {
-    border: "none",
-    boxShadow: "none",
-  },
-}));
-
 const ChannellList = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
     width: "250px",
@@ -95,11 +85,18 @@ const ChannelWrapper = styled(Box)(({ theme }) => ({
   fontSize: "small",
 }));
 
-const Channel = ({ id, name }: TChannel) => {
+const Channel = ({ id, name, selected }: TChannel) => {
+  const router = useRouter();
+
   return (
     <ListItem sx={{ p: 0 }}>
-      <ListItemButton component="a" href={`/chat/${name}`} sx={{ p: 0 }}>
+      <ListItemButton
+        className="channel"
+        component="a"
+        sx={{ p: 0 }}
+        onClick={() => router.push(`/chat/${name}`)}>
         <ListItemText
+          className={ selected ? 'active': '' }
           sx={{
             p: 0,
             m: 0,
@@ -108,11 +105,7 @@ const Channel = ({ id, name }: TChannel) => {
             padding: "0.55rem 2.2rem",
             fontSize: "14px",
             fontWeight: 500,
-            color: grey[700],
-            "&:active": {
-              borderColor: "#0f5091",
-              color: "#0f5091",
-            },
+            color: grey[700]
           }}
         >
           # {name}
@@ -206,7 +199,7 @@ const Channels = (channels: TChannels) => {
 
               <ChannelWrapper sx={{ display: { xs: "none", md: "block" } }}>
                 {channelList.map((item: TChannel) => (
-                  <Channel key={item.id} {...item} />
+                  <Channel key={item.id} {...item} selected={ (item.name === channel) } />
                 ))}
               </ChannelWrapper>
             </Box>
