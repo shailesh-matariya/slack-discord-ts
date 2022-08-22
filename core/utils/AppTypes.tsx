@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 export type TProps = { children: ReactNode };
 
 export type TChannel = {
+  teamId: string;
   id: number;
   channelId: number;
   name: string;

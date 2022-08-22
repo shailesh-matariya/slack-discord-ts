@@ -4,13 +4,13 @@ import Chat from '../../routes/chat';
 
 const ChatPage = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { teamId, chProp } = router.query;
 
   if (!router.isReady) return <></>;
 
   return (
     <>
-      <Chat id={id} />
+      <Chat teamId={teamId} chProp={chProp} />
     </>
   )
 }

@@ -85,7 +85,7 @@ const ChannelWrapper = styled(Box)(({ theme }) => ({
   fontSize: "small",
 }));
 
-const Channel = ({ id, name, selected }: TChannel) => {
+const Channel = ({ tId, id, name, selected }: any) => {
   const router = useRouter();
 
   return (
@@ -94,7 +94,7 @@ const Channel = ({ id, name, selected }: TChannel) => {
         className="channel"
         component="a"
         sx={{ p: 0 }}
-        onClick={() => router.push(`/chat/${name}`)}>
+        onClick={() => router.push(`/t/${tId}?chProp=${name}`)}>
         <ListItemText
           className={ selected ? 'active': '' }
           sx={{
@@ -115,21 +115,20 @@ const Channel = ({ id, name, selected }: TChannel) => {
   );
 };
 
-const Channels = (channels: TChannels) => {
+const Channels = ({ teamId, channels }: any) => {
   const router = useRouter();
   const [channel, setChannel] = useState("");
-  const [state, setstate] = useState();
-  const channelList = channels.channels;
-  const { id } = router.query;
+  const channelList = channels;
+  const { chProp } = router.query;
 
   useEffect(() => {
     if (channelList.length) {
       let ch;
-      if (!id) {
+      if (!chProp) {
         ch = channelList[0];
       } else {
         ch = channelList.find(
-          (ch: TChannel) => ch.channelId.toString() == id || ch.name == id
+          (ch: TChannel) => ch.channelId.toString() == chProp || ch.name == chProp
         );
       }
 
@@ -139,7 +138,7 @@ const Channels = (channels: TChannels) => {
 
   const handleChange = (event: any) => {
     setChannel(event.target.value);
-    router.push(`/chat/${event.target.value}`);
+    router.push(`/t/${teamId}?chProp=${event.target.value}`);
   };
 
   return (
@@ -190,7 +189,7 @@ const Channels = (channels: TChannels) => {
                   }}
                 >
                   {channelList.map((item: TChannel) => (
-                    <MenuItem key={item.id} value={item.name}>
+                    <MenuItem key={item.id} value={item.id}>
                       {item.name}
                     </MenuItem>
                   ))}
@@ -199,7 +198,7 @@ const Channels = (channels: TChannels) => {
 
               <ChannelWrapper sx={{ display: { xs: "none", md: "block" } }}>
                 {channelList.map((item: TChannel) => (
-                  <Channel key={item.id} {...item} selected={ (item.name === channel) } />
+                  <Channel key={item.id} tId={teamId} {...item} selected={ (item.name === channel) } />
                 ))}
               </ChannelWrapper>
             </Box>

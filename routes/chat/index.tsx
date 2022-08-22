@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { Grid } from "@mui/material";
 import { Container } from "@mui/system";
 import Channels from "../../core/components/Channels";
@@ -7,24 +8,27 @@ import { httpClient } from "../../core/utils/Api";
 import { useEffect, useState } from "react";
 import { TChannel } from '../../core/utils/AppTypes';
 
-const Chat = ({ id }: any) => {
+const Chat = ({ teamId, chProp }: any) => {
+  const router = useRouter();
   const [channels, setChannels] = useState([]);
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState([]);
-  const [selectedChannel, setSelectedChannel] = useState<TChannel>({ id: 0, channelId: 0, name: '' });
+  const [selectedChannel, setSelectedChannel] = useState<any>({ id: 0, channelId: 0, name: '' });
   var ch;
 
   const getChannels = () => {
     httpClient
-      .get(`/slack-channels?platform=slack&team_id=T03SH2Y8PJM`)
+      .get(`/slack-channels?platform=slack&team_id=${teamId}`)
       .then(({ data }) => {
         const channels = data.channel_collection;
         setChannels(channels);
-        if (!id) {
+        if (!chProp) {
           ch = channels[0];
         } else {
-          ch = channels.find((ch: TChannel) => ch.channelId === id || ch.name === id);
+          ch = channels.find((ch: TChannel) => ch.channelId === chProp || ch.name === chProp);
         }
+
+        if (!ch) return router.push('/404');
 
         setSelectedChannel(ch);
         getMassages(ch.id);
@@ -34,21 +38,21 @@ const Chat = ({ id }: any) => {
   const getMassages = (chId: number) => {
     httpClient
       .get(
-        `/channel-messages?platform=slack&team_id=T03SH2Y8PJM&channel_id=${chId}`
+        `/channel-messages?platform=slack&team_id=${teamId}&channel_id=${chId}`
       )
       .then((resp) => setMessages(resp.data.message_collection.data));
   };
 
   const getUsers = () => {
     httpClient
-      .get(`/slack-users?platform=slack&team_id=T03SH2Y8PJM`)
+      .get(`/slack-users?platform=slack&team_id=${teamId}`)
       .then((resp) => setUsers(resp.data.user_collection));
   };
 
   useEffect(() => {
     getChannels();
     getUsers();
-  }, [id]);
+  }, [teamId, chProp]);
 
   const ConversationWrapper = styled("div")(({ theme }) => ({
     overflow: "auto",
@@ -67,7 +71,7 @@ const Chat = ({ id }: any) => {
           xs={12}
           sx={{ display: { lg: "flex", xs: "hidden" } }}
         >
-          <Channels channels={channels} />
+          <Channels teamId={teamId} channels={channels} />
         </Grid>
 
         <Grid
