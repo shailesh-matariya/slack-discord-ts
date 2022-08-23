@@ -1,18 +1,19 @@
-import React from 'react';
-import { useRouter } from 'next/router';
-import Chat from '../../routes/chat';
+import React from "react";
+import { useRouter } from "next/router";
+import Chat from "../../routes/chat";
 
 const ChatPage = () => {
   const router = useRouter();
   const { teamId, chProp } = router.query;
+  const secondaryColor = "lightgrey";
 
   if (!router.isReady) return <></>;
 
   return (
     <>
-      <Chat teamId={teamId} chProp={chProp} />
+      <Chat teamId={teamId} chProp={chProp} secondaryColor={secondaryColor} />
     </>
-  )
-}
+  );
+};
 
-export default ChatPage
+export default ChatPage;

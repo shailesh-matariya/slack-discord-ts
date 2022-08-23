@@ -12,13 +12,16 @@ import Button from "@mui/material/Button";
 import Image from "next/image";
 import { deepOrange, grey, blue } from "@mui/material/colors";
 
-const Search = styled(Box)(({ theme }) => ({
+const Search = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "color" && prop !== "myProp",
+})(({ theme, myProp }: any) => ({
+  backgroundColor: myProp ? "aliceblue" : "white",
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  color: theme.palette.getContrastText(grey[500]),
-  backgroundColor: grey[700],
+  color: grey[100],
+  opacity: 0.5,
   "&:hover": {
-    backgroundColor: grey[700],
+    opacity: 0.4,
   },
   marginRight: theme.spacing(2),
   width: "100%",
@@ -37,15 +40,15 @@ const SearchIconWrapper = styled(Box)(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
+  // color: "white",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
+    // [theme.breakpoints.up("md")]: {
+    //   width: "20ch",
+    // },
   },
 }));
 
@@ -62,7 +65,9 @@ const ColorButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const Header = () => {
+const Header = ({ primaryColor }: any) => {
+  console.log("color : ", primaryColor);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
@@ -132,7 +137,7 @@ const Header = () => {
     <Box>
       <AppBar
         position="static"
-        sx={{ backgroundColor: grey[800], boxShadow: "none" }}
+        sx={{ backgroundColor: primaryColor || grey[800], boxShadow: "none" }}
       >
         <Toolbar sx={{ Height: 75, padding: 2 }}>
           <Image
@@ -142,14 +147,19 @@ const Header = () => {
             width={100}
           />
 
-          <Search sx={{ display: { xs: "none", md: "inline-block" } }}>
+          <Search
+            sx={{
+              display: { xs: "none", md: "inline-block" },
+              // backgroundColor: { primaryColor },
+            }}
+          >
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search messages"
               inputProps={{ "aria-label": "search" }}
-              sx={{ color: "#fff", fontSize: "medium" }}
+              sx={{ fontSize: "medium" }}
             />
           </Search>
 

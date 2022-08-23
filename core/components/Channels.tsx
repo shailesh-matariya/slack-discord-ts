@@ -52,9 +52,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const ChannellList = styled(Box)(({ theme }) => ({
-  [theme.breakpoints.up("md")]: {
-    width: "250px",
-  },
   width: "100%",
 }));
 
@@ -94,9 +91,10 @@ const Channel = ({ tId, id, name, selected }: any) => {
         className="channel"
         component="a"
         sx={{ p: 0 }}
-        onClick={() => router.push(`/t/${tId}?chProp=${name}`)}>
+        onClick={() => router.push(`/t/${tId}?chProp=${name}`)}
+      >
         <ListItemText
-          className={ selected ? 'active': '' }
+          className={selected ? "active" : ""}
           sx={{
             p: 0,
             m: 0,
@@ -105,7 +103,7 @@ const Channel = ({ tId, id, name, selected }: any) => {
             padding: "0.55rem 2.2rem",
             fontSize: "14px",
             fontWeight: 500,
-            color: grey[700]
+            color: grey[700],
           }}
         >
           # {name}
@@ -128,7 +126,8 @@ const Channels = ({ teamId, channels }: any) => {
         ch = channelList[0];
       } else {
         ch = channelList.find(
-          (ch: TChannel) => ch.channelId.toString() == chProp || ch.name == chProp
+          (ch: TChannel) =>
+            ch.channelId.toString() == chProp || ch.name == chProp
         );
       }
 
@@ -198,7 +197,12 @@ const Channels = ({ teamId, channels }: any) => {
 
               <ChannelWrapper sx={{ display: { xs: "none", md: "block" } }}>
                 {channelList.map((item: TChannel) => (
-                  <Channel key={item.id} tId={teamId} {...item} selected={ (item.name === channel) } />
+                  <Channel
+                    key={item.id}
+                    tId={teamId}
+                    {...item}
+                    selected={item.name === channel}
+                  />
                 ))}
               </ChannelWrapper>
             </Box>

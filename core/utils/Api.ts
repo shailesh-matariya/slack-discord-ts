@@ -40,3 +40,15 @@ httpClient.interceptors.response.use(
     return Promise.reject(err);
   }
 );
+
+httpClient.interceptors.request.use(
+  (config) => {
+    config.url = `${config.url}?url=${window.location.href}`;
+    // console.log("config", config.url);
+
+    return config;
+  },
+  (error) => {
+    Promise.reject(error);
+  }
+);
