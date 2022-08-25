@@ -42,7 +42,7 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
 
   const getMassages = (chId: number) => {
     httpClient
-      .get(`/channel-messages`)
+      .get(`/channel-messages?channel_id=${chId}`)
       .then((resp) => setMessages(resp.data.message_collection.data));
   };
 
@@ -60,7 +60,6 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
     getChannels();
     getUsers();
     getConfig();
-    console.log(`${window.location.href}`);
   }, [teamId, chProp]);
 
   const ConversationWrapper = styled("div")(({ theme }) => ({

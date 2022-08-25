@@ -66,8 +66,6 @@ const ColorButton = styled(Button)(({ theme }) => ({
 }));
 
 const Header = ({ primaryColor }: any) => {
-  console.log("color : ", primaryColor);
-
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
