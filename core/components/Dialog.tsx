@@ -58,7 +58,7 @@ const Dialog = ({ messageDetail, users }: TDialog) => {
         key={messageDetail.id}
         sx={{ width: "100%", textDecoration: "none"}}
       > */}
-      <Divider>
+      <Divider style={{ width: "100%" }}>
         <Chip
           sx={{
             backgroundColor: "transparent",
@@ -69,6 +69,7 @@ const Dialog = ({ messageDetail, users }: TDialog) => {
           label={moment(messageDetail?.ts * 1000).format("LLLL")}
         />
       </Divider>
+
       <ListItem
         sx={{
           padding: { sm: "5px 0", md: "5px 15px" },
@@ -114,6 +115,7 @@ const Dialog = ({ messageDetail, users }: TDialog) => {
                 alignItems: "center",
                 fontWeight: 600,
                 fontSize: "15px",
+                color: "black",
               }}
             >
               {user?.name}
