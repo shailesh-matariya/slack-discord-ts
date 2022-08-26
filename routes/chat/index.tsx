@@ -52,14 +52,9 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
       .then((resp) => setUsers(resp.data.user_collection));
   };
 
-  const getConfig = () => {
-    httpClient.get(`/brand-config`).then((resp) => resp);
-  };
-
   useEffect(() => {
     getChannels();
     getUsers();
-    getConfig();
   }, [teamId, chProp]);
 
   const ConversationWrapper = styled("div")(({ theme }) => ({
@@ -68,6 +63,13 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
+    // height: "calc(100vh - 80px)",
+    // [theme.breakpoints.up("md")]: {
+    //   width: "calc(100vw - 225px)",
+    // },
+    // [theme.breakpoints.up("lg")]: {
+    //   width: "calc(100vw - 352px)",
+    // },
   }));
 
   return (
@@ -93,7 +95,13 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
             backgroundColor: secondaryColor || grey[200],
           }}
         >
-          <Box sx={{ px: 3, maxWidth: "1600px", minWidth: "1600px" }}>
+          <Box
+            sx={{
+              px: { sm: 7, md: 2 },
+              width: "100%",
+              minWidth: { sm: "100%" },
+            }}
+          >
             <ConversationWrapper>
               <Conversation
                 channel={selectedChannel}

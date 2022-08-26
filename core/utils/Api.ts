@@ -43,11 +43,9 @@ httpClient.interceptors.response.use(
 
 httpClient.interceptors.request.use(
   (config) => {
-    console.log(config);
-
     let url = window.location.href;
     url = url.replace(
-      "http://localhost:3001",
+      "http://localhost:3000",
       "http://slack.cloudcraftsmanship.io"
     );
     if (config.url && config.url.indexOf("?") > -1) {

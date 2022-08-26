@@ -11,6 +11,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import Image from "next/image";
 import { deepOrange, grey, blue } from "@mui/material/colors";
+import logo from "../../public/assets/images/fleetdm-logo.png";
 
 const Search = styled(Box, {
   shouldForwardProp: (prop) => prop !== "color" && prop !== "myProp",
@@ -21,7 +22,7 @@ const Search = styled(Box, {
   color: grey[100],
   opacity: 0.5,
   "&:hover": {
-    opacity: 0.4,
+    opacity: 0.48,
   },
   marginRight: theme.spacing(2),
   width: "100%",
@@ -36,16 +37,15 @@ const SearchIconWrapper = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  color: "#9ca6b4",
+  color: "#6b6d71",
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  // color: "white",
+  width: "100%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
-    width: "100%",
     // [theme.breakpoints.up("md")]: {
     //   width: "20ch",
     // },
@@ -65,7 +65,9 @@ const ColorButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const Header = ({ primaryColor }: any) => {
+const Header = ({ primaryColor, logoUrl }: any) => {
+  console.log(logoUrl);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
@@ -138,12 +140,7 @@ const Header = ({ primaryColor }: any) => {
         sx={{ backgroundColor: primaryColor || grey[800], boxShadow: "none" }}
       >
         <Toolbar sx={{ Height: 75, padding: 2 }}>
-          <Image
-            alt="complex"
-            src="/assets/images/fleetdm-logo.png"
-            height={40}
-            width={100}
-          />
+          <Image alt="LOGO" src={logoUrl} width={65} height={45} />
 
           <Search
             sx={{
@@ -157,7 +154,7 @@ const Header = ({ primaryColor }: any) => {
             <StyledInputBase
               placeholder="Search messages"
               inputProps={{ "aria-label": "search" }}
-              sx={{ fontSize: "medium" }}
+              sx={{ fontSize: "medium", color: "grey" }}
             />
           </Search>
 

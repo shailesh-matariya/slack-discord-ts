@@ -7,15 +7,14 @@ import { TProps } from "../utils/AppTypes";
 
 const AppLayout = ({ children }: TProps) => {
   const [primaryColor, setPrimaryColor] = useState();
-  const logoUrl =
-    "http://localhost:3001/_next/image?url=%2Fassets%2Fimages%2Ffleetdm-logo.png&w=128&q=75";
+  const [logoUrl, setLogoUrl] = useState();
 
   const getConfig = () => {
-    httpClient
-      .get(`/brand-config`)
-      .then((resp) =>
-        setPrimaryColor(resp.data.brand_config.brand_primary_color)
-      );
+    httpClient.get(`/brand-config`).then((resp) => {
+      setPrimaryColor(resp.data.brand_config.brand_primary_color);
+      setLogoUrl(resp.data.brand_config.brand_logo_url);
+      return;
+    });
   };
 
   useEffect(() => {
@@ -37,7 +36,7 @@ const AppLayout = ({ children }: TProps) => {
           rel="stylesheet"
         />
       </Head>
-      <Header primaryColor={primaryColor} />
+      <Header primaryColor={primaryColor} logoUrl={logoUrl} />
       <Box className="container">{children}</Box>
     </>
   );

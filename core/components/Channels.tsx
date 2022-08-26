@@ -77,8 +77,11 @@ const ChannelCard = styled(Box)(({ theme }) => ({
 }));
 
 const ChannelWrapper = styled(Box)(({ theme }) => ({
-  height: "100vh",
-  overflowY: "auto",
+  height: "calc(100vh - 180px)",
+  overflow: "hidden",
+  "&:hover": {
+    overflowY: "auto",
+  },
   fontSize: "small",
 }));
 

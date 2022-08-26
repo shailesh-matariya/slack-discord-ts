@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-}
+  images: {
+    domains: ["slack-api.cloudcraftsmanship.io"],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

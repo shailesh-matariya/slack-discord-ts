@@ -69,12 +69,11 @@ const Dialog = ({ messageDetail, users }: TDialog) => {
           label={moment(messageDetail?.ts * 1000).format("LLLL")}
         />
       </Divider>
-
       <ListItem
         sx={{
-          padding: "5px 15px",
+          padding: { sm: "5px 0", md: "5px 15px" },
           "&:hover": {
-            backgroundColor: grey[100],
+            backgroundColor: grey[50],
           },
         }}
         key={messageDetail.id}
