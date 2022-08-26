@@ -12,6 +12,12 @@ import { toArray } from "react-emoji-render";
 import moment from "moment";
 import { TDialog, TUser } from "../utils/AppTypes";
 import { StyledComponent } from "@emotion/styled";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Chip from "@mui/material/Chip";
 
 const ExpandMore = styled((props) => {
   return <IconButton {...props} sx={{ fontSize: 6 }} />;
@@ -48,18 +54,102 @@ const Dialog = ({ messageDetail, users }: TDialog) => {
 
   return (
     <>
-      <Box key={messageDetail.id} sx={{ width: { xs: "100%", md: 600 } }}>
-        <Link href="#" sx={{ textDecoration: "none", mb: 4 }}>
+      {/* <Box
+        key={messageDetail.id}
+        sx={{ width: "100%", textDecoration: "none"}}
+      > */}
+      <Divider>
+        <Chip
+          sx={{
+            backgroundColor: "transparent",
+            border: "1px solid lightgrey",
+            color: "grey",
+            margin: "10px 0",
+          }}
+          label={moment(messageDetail?.ts * 1000).format("LLLL")}
+        />
+      </Divider>
+
+      <ListItem
+        sx={{
+          padding: "5px 15px",
+          "&:hover": {
+            backgroundColor: grey[100],
+          },
+        }}
+        key={messageDetail.id}
+        secondaryAction={
+          <Typography
+            variant="subtitle2"
+            sx={{
+              fontWeight: 400,
+              color: "#999999",
+              marginRight: "auto",
+              marginTop: "-20px",
+            }}
+          >
+            {moment(messageDetail?.ts * 1000).fromNow()}
+          </Typography>
+        }
+        disablePadding
+      >
+        <ListItemAvatar>
+          <Avatar
+            sx={{
+              bgcolor: red[500],
+              mt: 0,
+              width: 38,
+              height: 38,
+              borderRadius: "50%",
+            }}
+            src={user?.profile}
+            aria-label="Profile"
+          />
+        </ListItemAvatar>
+        <ListItemText
+          primary={
+            <Typography
+              variant="caption"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                fontWeight: 600,
+                fontSize: "15px",
+              }}
+            >
+              {user?.name}
+            </Typography>
+          }
+          secondary={
+            <>
+              <Box
+                sx={{
+                  color: grey[800],
+                  fontWeight: 400,
+                  fontSize: "14px",
+                }}
+              >
+                <Box
+                  dangerouslySetInnerHTML={{ __html: parseEmojis(message) }}
+                ></Box>
+              </Box>
+            </>
+          }
+        />
+      </ListItem>
+      {/* <Link href="#" sx={{ textDecoration: "none", mb: 4 }}>
           <Card
             variant="outlined"
             sx={{
-              marginBottom: "20px",
-              maxWidth: { md: 600 },
-              minWidth: { md: 600 },
-              "&:hover": {
-                boxShadow:
-                  "0 4px 8px 0 rgb(151 151 151 / 20%), 0 6px 20px 0 rgb(131 127 127 / 19%)",
-              },
+              borderBottom: "1px solid ",
+              backgroundColor: "transparent",
+              // marginBottom: "20px",
+              // maxWidth: { md: 600 },
+              // minWidth: { md: 600 },
+              // "&:hover": {
+              //   boxShadow:
+              //     "0 4px 8px 0 rgb(151 151 151 / 20%), 0 6px 20px 0 rgb(131 127 127 / 19%)",
+              // },
             }}
           >
             <CardHeader
@@ -108,8 +198,8 @@ const Dialog = ({ messageDetail, users }: TDialog) => {
               </Box>
             </CardContent>
           </Card>
-        </Link>
-      </Box>
+        </Link> */}
+      {/* </Box> */}
     </>
   );
 };

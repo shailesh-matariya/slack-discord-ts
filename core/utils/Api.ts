@@ -43,11 +43,18 @@ httpClient.interceptors.response.use(
 
 httpClient.interceptors.request.use(
   (config) => {
-    let url = window.location.href;
-    url = url.replace('http://localhost:3000', 'http://slack.cloudcraftsmanship.io')
-    if (config.url && config.url.indexOf('?') > -1) config.url = `${config.url}&url=${url}`
-    else config.url = `${config.url}?url=${url}`;
+    console.log(config);
 
+    let url = window.location.href;
+    url = url.replace(
+      "http://localhost:3001",
+      "http://slack.cloudcraftsmanship.io"
+    );
+    if (config.url && config.url.indexOf("?") > -1) {
+      // console.log(config.url.indexOf("?"));
+      config.url = `${config.url}&url=${url}`;
+      console.log(config.url);
+    } else config.url = `${config.url}?url=${url}`;
     return config;
   },
   (error) => {

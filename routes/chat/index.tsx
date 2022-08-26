@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { Container } from "@mui/system";
 import Channels from "../../core/components/Channels";
 import Conversation from "../../core/components/Conversation";
@@ -53,7 +53,7 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
   };
 
   const getConfig = () => {
-    httpClient.get(`/brand-config`).then((resp) => console.log(resp));
+    httpClient.get(`/brand-config`).then((resp) => resp);
   };
 
   useEffect(() => {
@@ -93,7 +93,7 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
             backgroundColor: secondaryColor || grey[200],
           }}
         >
-          <Container sx={{ px: { md: 6, xs: 6 } }}>
+          <Box sx={{ px: 3, maxWidth: "1600px", minWidth: "1600px" }}>
             <ConversationWrapper>
               <Conversation
                 channel={selectedChannel}
@@ -101,7 +101,7 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
                 users={users}
               />
             </ConversationWrapper>
-          </Container>
+          </Box>
         </Grid>
       </Grid>
     </>

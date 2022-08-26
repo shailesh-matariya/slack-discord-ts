@@ -5,7 +5,7 @@ import Chat from "../../routes/chat";
 const ChatPage = () => {
   const router = useRouter();
   const { teamId, chProp } = router.query;
-  const secondaryColor = "lightgrey";
+  const secondaryColor = "white";
 
   if (!router.isReady) return <></>;
 
