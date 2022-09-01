@@ -1,28 +1,16 @@
-import { Card } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
-import Link from "@mui/material/Link";
 import { styled } from "@mui/material/styles";
-import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { blue, grey, red } from "@mui/material/colors";
 import { Box } from "@mui/system";
-import { toArray } from "react-emoji-render";
 import moment from "moment";
 import { TDialog, TUser } from "../utils/AppTypes";
-import { StyledComponent } from "@emotion/styled";
-import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Chip from "@mui/material/Chip";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import { useRouter } from "next/router";
-import { spawn } from "child_process";
-import { WindowSharp } from "@mui/icons-material";
-import { useState } from "react";
+import { IconButton } from "@mui/material";
 
 const ExpandMore = styled((props) => {
   return <IconButton {...props} sx={{ fontSize: 6 }} />;
@@ -32,7 +20,6 @@ const ExpandMore = styled((props) => {
 }));
 
 const Dialog = ({ messageDetail, users, updateReplyMessages }: TDialog) => {
-  // console.log(messageDetail);
   const replies = messageDetail.replies;
   const usersMap: any = {};
   users.forEach((user) => {
@@ -45,21 +32,18 @@ const Dialog = ({ messageDetail, users, updateReplyMessages }: TDialog) => {
     return `<strong>@${usersMap[p1]?.name || usersMap[p1]?.username}</strong>`;
   });
 
-  // console.log(messageDetail.replies);
+  var userArray = messageDetail.replies
+    ?.map((item: any) => item.userId)
+    .filter((value: any, index: any, self: any) => {
+      return self.indexOf(value) === index;
+    });
 
-  var userArray = messageDetail.replies?.map((item: any) => item.userId);
-  userArray = [...new Set(userArray)];
-
-  // console.log(userArray);
   const arr = users.filter((item: any) => userArray.includes(item.userId));
 
-  // console.log(userArray);
-
   const parseEmojis: any = (value: any) => {
-    const emojisArray = toArray(value);
+    const emojisArray = Array(value);
 
-    // toArray outputs React elements for emojis and strings for other
-    const newValue = emojisArray.reduce((previous, current: any) => {
+    const newValue = emojisArray.reduce((previous: any, current: any) => {
       if (typeof current === "string") {
         return previous + current;
       }
@@ -72,18 +56,6 @@ const Dialog = ({ messageDetail, users, updateReplyMessages }: TDialog) => {
 
   return (
     <>
-      {/* <Divider style={{ width: "100%" }}>
-        <Chip
-          sx={{
-            backgroundColor: "transparent",
-            border: "1px solid lightgrey",
-            color: "grey",
-            margin: "10px 0",
-          }}
-          label={moment(messageDetail?.ts * 1000).format("LLLL")}
-        />
-      </Divider> */}
-
       <Box
         key={messageDetail.id}
         sx={{
@@ -163,7 +135,7 @@ const Dialog = ({ messageDetail, users, updateReplyMessages }: TDialog) => {
         <ListItem sx={{ ml: 5 }}>
           <ListItemAvatar>
             <AvatarGroup max={1}>
-              {arr.map((user: string) => (
+              {arr.map((user: any) => (
                 <Avatar
                   key={user}
                   sx={{ width: 30, height: 30 }}
@@ -171,15 +143,6 @@ const Dialog = ({ messageDetail, users, updateReplyMessages }: TDialog) => {
                   src={user?.profile || ""}
                 />
               ))}
-              {/* {
-                messageDetail.replies &&
-                  messageDetail.replies.length != 0 &&
-                  userArray.map(
-                    (user: string) => user
-                  
-                  )
-                // console.log([...new Set(userId)]);
-              } */}
             </AvatarGroup>
           </ListItemAvatar>
           <ListItemText sx={{ ml: 1, color: blue[600] }}>
@@ -188,7 +151,6 @@ const Dialog = ({ messageDetail, users, updateReplyMessages }: TDialog) => {
             )}
           </ListItemText>
         </ListItem>
-        {/* </List> */}
       </Box>
     </>
   );

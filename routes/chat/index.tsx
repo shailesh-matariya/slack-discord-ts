@@ -1,36 +1,16 @@
 import { useRouter } from "next/router";
-import {
-  Avatar,
-  Box,
-  getFormHelperTextUtilityClasses,
-  Grid,
-  Typography,
-} from "@mui/material";
-import { Container } from "@mui/system";
-import Channels from "../../core/components/Channels";
+import { Box, Grid, Typography } from "@mui/material";
 import Conversation from "../../core/components/Conversation";
 import { styled } from "@mui/material/styles";
 import { httpClient } from "../../core/utils/Api";
 import { useEffect, useState } from "react";
 import { TChannel } from "../../core/utils/AppTypes";
 import { grey } from "@mui/material/colors";
-import Replies from "../../core/components/Replies";
-import moment from "moment";
-import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Link from "next/link";
-
-const ListItemNew = styled(ListItem)<{ component?: React.ElementType }>({
-  "& .MuiListItemSecondaryAction-root": {
-    position: "unset",
-  },
-});
+import Channels from "../../core/components/Channels";
 
 const Chat = ({ teamId, chProp, secondaryColor }: any) => {
   const router = useRouter();
-  // console.log(chProp);
+  // console.log();
   const [isReplyVisible, setIsReplyVisible] = useState(false);
   const [channels, setChannels] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -115,10 +95,7 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
 
   const updateReplyMessages = (messages: []) => {
     setReplyMessages(messages);
-    // if (replyMessages != []) {
     setIsReplyVisible(true);
-    //   console.log("replyMessages");
-    // }
   };
 
   return (
@@ -141,8 +118,7 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
           xs={12}
           sx={{
             display: "inset",
-            // height: "calc(100vh - 80px)",
-            // width: "100%",
+
             backgroundColor: secondaryColor || grey[200],
           }}
         >
@@ -158,12 +134,10 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
             <Box
               sx={{
                 pr: { md: 2 },
-                // width: "calc(100vw - 764px)" { md: "25%", xs: "50%" },
                 width:
                   isReplyVisible && replyMessages.length != 0
                     ? { lg: "75%", md: "65%", xs: "50%" }
                     : "100%",
-                // width: "75%",
                 display: "flex",
                 justifyContent: "center",
                 height: "calc(100vh - 74px)",
@@ -216,7 +190,6 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
                       <Typography
                         sx={{
                           display: { md: "flex", xs: "none" },
-                          // float: "right",
                           ml: { lg: 27, sm: 15 },
                         }}
                       >
@@ -244,9 +217,6 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
 
                   <Box
                     sx={{
-                      // margin: "2rem 0",
-                      // padding: "0 1.5rem",
-                      // maxWidth: "100%",
                       display: "flex",
                       justifyContent: "center",
                     }}
@@ -258,13 +228,13 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
                         width: "100%",
                       }}
                     >
-                      {/* </Box> */}
                       {replyMessages.length && (
                         <Conversation
                           channel={selectedChannel}
                           messages={replyMessages}
                           users={users}
                           isReplyVisible={isReplyVisible}
+                          updateReplyMessages={updateReplyMessages}
                         />
                       )}
                     </Box>

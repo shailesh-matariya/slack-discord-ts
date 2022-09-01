@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { styled, alpha } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,8 +10,7 @@ import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import Image from "next/image";
-import { deepOrange, grey, blue } from "@mui/material/colors";
-import logo from "../../public/assets/images/fleetdm-logo.png";
+import { blue, grey } from "@mui/material/colors";
 
 const Search = styled(Box, {
   shouldForwardProp: (prop) => prop !== "color" && prop !== "myProp",
@@ -46,9 +45,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
-    // [theme.breakpoints.up("md")]: {
-    //   width: "20ch",
-    // },
   },
 }));
 
@@ -80,11 +76,6 @@ const Header = ({ primaryColor, logoUrl }: any) => {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-
-  const handleMobileMenuOpen = (event: any) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -143,7 +134,6 @@ const Header = ({ primaryColor, logoUrl }: any) => {
           <Search
             sx={{
               display: { xs: "none", md: "inline-block" },
-              // backgroundColor: { primaryColor },
             }}
           >
             <SearchIconWrapper>
