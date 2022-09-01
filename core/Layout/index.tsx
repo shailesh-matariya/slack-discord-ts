@@ -13,6 +13,12 @@ const AppLayout = ({ children }: TProps) => {
     httpClient.get(`/brand-config`).then((resp) => {
       setPrimaryColor(resp.data.brand_config.brand_primary_color);
       setLogoUrl(resp.data.brand_config.brand_logo_url);
+
+      const head = document.getElementsByTagName("head");
+      console.log(resp.data.brand_config.brand_custom_code);
+
+      // head[0].appendChild(resp.data.brand_config.brand_custom_code);
+
       return;
     });
   };

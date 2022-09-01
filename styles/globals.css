@@ -27,5 +27,7 @@ a {
 
 .MuiListItemText-root.active {
   border-color: #0f5091;
-  color: #0f5091
+  color: #0f5091;
+  font-weight: 500 !important;
+  margin-left: 5px;
 }

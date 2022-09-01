@@ -1,5 +1,11 @@
 import { useRouter } from "next/router";
-import { Box, Grid } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  getFormHelperTextUtilityClasses,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { Container } from "@mui/system";
 import Channels from "../../core/components/Channels";
 import Conversation from "../../core/components/Conversation";
@@ -8,17 +14,36 @@ import { httpClient } from "../../core/utils/Api";
 import { useEffect, useState } from "react";
 import { TChannel } from "../../core/utils/AppTypes";
 import { grey } from "@mui/material/colors";
+import Replies from "../../core/components/Replies";
+import moment from "moment";
+import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Link from "next/link";
+
+const ListItemNew = styled(ListItem)<{ component?: React.ElementType }>({
+  "& .MuiListItemSecondaryAction-root": {
+    position: "unset",
+  },
+});
 
 const Chat = ({ teamId, chProp, secondaryColor }: any) => {
   const router = useRouter();
+  // console.log(chProp);
+  const [isReplyVisible, setIsReplyVisible] = useState(false);
   const [channels, setChannels] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [replyMessages, setReplyMessages] = useState([]);
   const [users, setUsers] = useState([]);
+  const [reply, setReply] = useState();
+
   const [selectedChannel, setSelectedChannel] = useState<any>({
     id: 0,
     channelId: 0,
     name: "",
   });
+
   var ch;
 
   const getChannels = () => {
@@ -36,14 +61,18 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
       if (!ch) return router.push("/404");
 
       setSelectedChannel(ch);
-      getMassages(ch.id);
+      getMessages(ch.id);
     });
   };
 
-  const getMassages = (chId: number) => {
-    httpClient
-      .get(`/channel-messages?channel_id=${chId}`)
-      .then((resp) => setMessages(resp.data.message_collection.data));
+  const getMessages = (chId: number) => {
+    httpClient.get(`/channel-messages?channel_id=${chId}`).then((resp) => {
+      setMessages(resp.data.message_collection.data);
+      resp.data.message_collection.data.map((item: any) => {
+        setReply(item.replies);
+        // console.log(item.replies);
+      });
+    });
   };
 
   const getUsers = () => {
@@ -58,23 +87,44 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
   }, [teamId, chProp]);
 
   const ConversationWrapper = styled("div")(({ theme }) => ({
+    // overflow: "auto",
+    paddingTop: "20px",
+    // display: "flex",
+    // flexDirection: "column",
+    alignItems: "center",
+    [theme.breakpoints.up("sm")]: {
+      // maxWidth: "56rem",
+      // minWidth: "56rem",
+    },
+
+    width: "90%",
+  }));
+
+  const ReplyWrapper = styled("div")(({ theme }) => ({
     overflow: "auto",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    // padding: "0 1rem",
+    // borderBottom: "1px solid lightgrey",
+    padding: "0 1rem",
+    // backgroundColor: grey[100],
+    // mb: 2,
     width: "100%",
-    // height: "calc(100vh - 80px)",
-    // [theme.breakpoints.up("md")]: {
-    //   width: "calc(100vw - 225px)",
-    // },
-    // [theme.breakpoints.up("lg")]: {
-    //   width: "calc(100vw - 352px)",
-    // },
+    // height: "calc(100vh - 73px)",
   }));
+
+  const updateReplyMessages = (messages: []) => {
+    setReplyMessages(messages);
+    // if (replyMessages != []) {
+    setIsReplyVisible(true);
+    //   console.log("replyMessages");
+    // }
+  };
 
   return (
     <>
       <Grid container>
+        {/* Channels */}
         <Grid
           item
           md={2}
@@ -84,31 +134,144 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
           <Channels teamId={teamId} channels={channels} />
         </Grid>
 
+        {/* Coversation */}
         <Grid
           item
           md={10}
           xs={12}
           sx={{
             display: "inset",
-            overflow: "auto",
-            height: "calc(100vh - 80px)",
+            // height: "calc(100vh - 80px)",
+            // width: "100%",
             backgroundColor: secondaryColor || grey[200],
           }}
         >
           <Box
             sx={{
-              px: { sm: 7, md: 2 },
-              width: "100%",
-              minWidth: { sm: "100%" },
+              width: { xs: "91%", sm: "100%" },
+              mx: "auto",
+              px: { xs: 2.5, sm: 0 },
+              display: { sm: "flex" },
             }}
           >
-            <ConversationWrapper>
-              <Conversation
-                channel={selectedChannel}
-                messages={messages}
-                users={users}
-              />
-            </ConversationWrapper>
+            {/* Messages */}
+            <Box
+              sx={{
+                pr: { md: 2 },
+                // width: "calc(100vw - 764px)" { md: "25%", xs: "50%" },
+                width:
+                  isReplyVisible && replyMessages.length != 0
+                    ? { lg: "75%", md: "65%", xs: "50%" }
+                    : "100%",
+                // width: "75%",
+                display: "flex",
+                justifyContent: "center",
+                height: "calc(100vh - 74px)",
+                overflow: "auto",
+              }}
+            >
+              <ConversationWrapper>
+                <Conversation
+                  channel={selectedChannel}
+                  messages={messages}
+                  users={users}
+                  updateReplyMessages={updateReplyMessages}
+                />
+              </ConversationWrapper>
+            </Box>
+
+            {/* Replies */}
+            {isReplyVisible && replyMessages.length != 0 && (
+              <Box
+                sx={{
+                  overflow: "auto",
+                  display: "flex",
+                  flexDirection: "column",
+                  borderLeft: "1px solid lightgrey",
+                  width: { lg: "25%", md: "35%", xs: "50%" },
+                  height: "calc(100vh - 72px)",
+                }}
+              >
+                <ReplyWrapper>
+                  {/* Reply Title */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "between",
+                      borderBottom: "1px solid lightgrey",
+                      p: 3,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "between",
+                      }}
+                    >
+                      <Typography
+                        sx={{ pl: 1, fontWeight: "500", whiteSpace: "noWrap" }}
+                      >
+                        {chProp}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          display: { md: "flex", xs: "none" },
+                          // float: "right",
+                          ml: { lg: 27, sm: 15 },
+                        }}
+                      >
+                        <a href="#" onClick={() => setIsReplyVisible(false)}>
+                          <svg
+                            aria-hidden="true"
+                            focusable="false"
+                            data-prefix="fas"
+                            data-icon="x"
+                            role="img"
+                            height={15}
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 384 512"
+                            color="gray"
+                          >
+                            <path
+                              fill="currentColor"
+                              d="M376.6 427.5c11.31 13.58 9.484 33.75-4.094 45.06c-5.984 4.984-13.25 7.422-20.47 7.422c-9.172 0-18.27-3.922-24.59-11.52L192 305.1l-135.4 162.5c-6.328 7.594-15.42 11.52-24.59 11.52c-7.219 0-14.48-2.438-20.47-7.422c-13.58-11.31-15.41-31.48-4.094-45.06l142.9-171.5L7.422 84.5C-3.891 70.92-2.063 50.75 11.52 39.44c13.56-11.34 33.73-9.516 45.06 4.094L192 206l135.4-162.5c11.3-13.58 31.48-15.42 45.06-4.094c13.58 11.31 15.41 31.48 4.094 45.06l-142.9 171.5L376.6 427.5z"
+                            ></path>
+                          </svg>
+                        </a>
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      // margin: "2rem 0",
+                      // padding: "0 1.5rem",
+                      // maxWidth: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        margin: "2rem 0",
+                        padding: { lg: "0 1.5rem", md: 0 },
+                        width: "100%",
+                      }}
+                    >
+                      {/* </Box> */}
+                      {replyMessages.length && (
+                        <Conversation
+                          channel={selectedChannel}
+                          messages={replyMessages}
+                          users={users}
+                          isReplyVisible={isReplyVisible}
+                        />
+                      )}
+                    </Box>
+                  </Box>
+                </ReplyWrapper>
+              </Box>
+            )}
           </Box>
         </Grid>
       </Grid>

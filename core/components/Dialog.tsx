@@ -6,7 +6,7 @@ import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { grey, red } from "@mui/material/colors";
+import { blue, grey, red } from "@mui/material/colors";
 import { Box } from "@mui/system";
 import { toArray } from "react-emoji-render";
 import moment from "moment";
@@ -18,6 +18,11 @@ import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Chip from "@mui/material/Chip";
+import AvatarGroup from "@mui/material/AvatarGroup";
+import { useRouter } from "next/router";
+import { spawn } from "child_process";
+import { WindowSharp } from "@mui/icons-material";
+import { useState } from "react";
 
 const ExpandMore = styled((props) => {
   return <IconButton {...props} sx={{ fontSize: 6 }} />;
@@ -26,7 +31,9 @@ const ExpandMore = styled((props) => {
   marginLeft: "auto",
 }));
 
-const Dialog = ({ messageDetail, users }: TDialog) => {
+const Dialog = ({ messageDetail, users, updateReplyMessages }: TDialog) => {
+  // console.log(messageDetail);
+  const replies = messageDetail.replies;
   const usersMap: any = {};
   users.forEach((user) => {
     usersMap[user.userId] = user;
@@ -35,8 +42,18 @@ const Dialog = ({ messageDetail, users }: TDialog) => {
   const user = usersMap[messageDetail.userId];
   const msg = messageDetail.message;
   const message = msg.replace(/<@(.*?)>/g, function replacer(match, p1) {
-    return `<strong>@${usersMap[p1]?.name}</strong>`;
+    return `<strong>@${usersMap[p1]?.name || usersMap[p1]?.username}</strong>`;
   });
+
+  // console.log(messageDetail.replies);
+
+  var userArray = messageDetail.replies?.map((item: any) => item.userId);
+  userArray = [...new Set(userArray)];
+
+  // console.log(userArray);
+  const arr = users.filter((item: any) => userArray.includes(item.userId));
+
+  // console.log(userArray);
 
   const parseEmojis: any = (value: any) => {
     const emojisArray = toArray(value);
@@ -51,14 +68,11 @@ const Dialog = ({ messageDetail, users }: TDialog) => {
 
     return newValue;
   };
+  const router = useRouter();
 
   return (
     <>
-      {/* <Box
-        key={messageDetail.id}
-        sx={{ width: "100%", textDecoration: "none"}}
-      > */}
-      <Divider style={{ width: "100%" }}>
+      {/* <Divider style={{ width: "100%" }}>
         <Chip
           sx={{
             backgroundColor: "transparent",
@@ -68,139 +82,114 @@ const Dialog = ({ messageDetail, users }: TDialog) => {
           }}
           label={moment(messageDetail?.ts * 1000).format("LLLL")}
         />
-      </Divider>
+      </Divider> */}
 
-      <ListItem
+      <Box
+        key={messageDetail.id}
         sx={{
-          padding: { sm: "5px 0", md: "5px 15px" },
+          width: "100%",
+          textDecoration: "none",
+          padding: 1,
           "&:hover": {
             backgroundColor: grey[50],
           },
+          cursor: "pointer",
         }}
-        key={messageDetail.id}
-        secondaryAction={
-          <Typography
-            variant="subtitle2"
-            sx={{
-              fontWeight: 400,
-              color: "#999999",
-              marginRight: "auto",
-              marginTop: "-20px",
-            }}
-          >
-            {moment(messageDetail?.ts * 1000).fromNow()}
-          </Typography>
-        }
-        disablePadding
+        onClick={() => updateReplyMessages(messageDetail.replies)}
       >
-        <ListItemAvatar>
-          <Avatar
-            sx={{
-              bgcolor: red[500],
-              mt: 0,
-              width: 38,
-              height: 38,
-              borderRadius: "50%",
-            }}
-            src={user?.profile}
-            aria-label="Profile"
-          />
-        </ListItemAvatar>
-        <ListItemText
-          primary={
+        <ListItem
+          key={messageDetail.id}
+          secondaryAction={
             <Typography
-              variant="caption"
+              variant="subtitle2"
               sx={{
-                display: "flex",
-                alignItems: "center",
-                fontWeight: 600,
-                fontSize: "15px",
-                color: "black",
+                fontWeight: 400,
+                color: "#999999",
+                marginRight: "auto",
+                marginTop: "-20px",
               }}
             >
-              {user?.name}
+              {moment(messageDetail?.ts * 1000).fromNow()}
             </Typography>
           }
-          secondary={
-            <>
-              <Box
+          disablePadding
+        >
+          <ListItemAvatar>
+            <Avatar
+              sx={{
+                bgcolor: red[500],
+                mt: 0,
+                width: 38,
+                height: 38,
+                borderRadius: "50%",
+              }}
+              src={user?.profile || ""}
+              aria-label="Profile"
+            />
+          </ListItemAvatar>
+          <ListItemText
+            primary={
+              <Typography
+                variant="caption"
                 sx={{
-                  color: grey[800],
-                  fontWeight: 400,
-                  fontSize: "14px",
+                  display: "flex",
+                  alignItems: "center",
+                  fontWeight: 600,
+                  fontSize: "15px",
+                  color: "black",
                 }}
               >
+                {user?.name || user?.username}
+              </Typography>
+            }
+            secondary={
+              <>
                 <Box
-                  dangerouslySetInnerHTML={{ __html: parseEmojis(message) }}
-                ></Box>
-              </Box>
-            </>
-          }
-        />
-      </ListItem>
-      {/* <Link href="#" sx={{ textDecoration: "none", mb: 4 }}>
-          <Card
-            variant="outlined"
-            sx={{
-              borderBottom: "1px solid ",
-              backgroundColor: "transparent",
-              // marginBottom: "20px",
-              // maxWidth: { md: 600 },
-              // minWidth: { md: 600 },
-              // "&:hover": {
-              //   boxShadow:
-              //     "0 4px 8px 0 rgb(151 151 151 / 20%), 0 6px 20px 0 rgb(131 127 127 / 19%)",
-              // },
-            }}
-          >
-            <CardHeader
-              avatar={
-                <Avatar
-                  sx={{ bgcolor: red[500], mt: 0, width: 32, height: 32 }}
-                  src={user?.profile}
-                  aria-label="Profile"
-                />
-              }
-              action={
-                <Typography
-                  variant="subtitle2"
-                  sx={{ fontWeight: 400, color: "#999999", marginRight: "7px" }}
-                >
-                  {moment(messageDetail?.ts * 1000).fromNow()}
-                </Typography>
-              }
-              title={
-                <Typography
-                  variant="caption"
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    fontWeight: 600,
+                    color: grey[800],
+                    fontWeight: 400,
                     fontSize: "14px",
                   }}
                 >
-                  {user?.name}
-                </Typography>
-              }
-              sx={{ alignItems: "flex-start", pb: 0 }}
-            />
-
-            <CardContent sx={{ p: 0, ml: 8, pr: 1 }}>
-              <Box
-                sx={{
-                  color: grey[800],
-                  fontWeight: 400,
-                  fontSize: "13px",
-                }}
-              >
-                <Box
-                  dangerouslySetInnerHTML={{ __html: parseEmojis(message) }}
-                ></Box>
-              </Box>
-            </CardContent>
-          </Card>
-        </Link> */}
-      {/* </Box> */}
+                  <Box
+                    dangerouslySetInnerHTML={{ __html: parseEmojis(message) }}
+                  ></Box>
+                </Box>
+              </>
+            }
+          />
+        </ListItem>
+        {/* <List> */}
+        <ListItem sx={{ ml: 5 }}>
+          <ListItemAvatar>
+            <AvatarGroup max={1}>
+              {arr.map((user: string) => (
+                <Avatar
+                  key={user}
+                  sx={{ width: 30, height: 30 }}
+                  alt="Remy Sharp"
+                  src={user?.profile || ""}
+                />
+              ))}
+              {/* {
+                messageDetail.replies &&
+                  messageDetail.replies.length != 0 &&
+                  userArray.map(
+                    (user: string) => user
+                  
+                  )
+                // console.log([...new Set(userId)]);
+              } */}
+            </AvatarGroup>
+          </ListItemAvatar>
+          <ListItemText sx={{ ml: 1, color: blue[600] }}>
+            {messageDetail.replies && messageDetail.replies.length != 0 && (
+              <>{messageDetail.replies.length} replies</>
+            )}
+          </ListItemText>
+        </ListItem>
+        {/* </List> */}
+      </Box>
     </>
   );
 };

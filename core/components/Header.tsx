@@ -66,8 +66,6 @@ const ColorButton = styled(Button)(({ theme }) => ({
 }));
 
 const Header = ({ primaryColor, logoUrl }: any) => {
-  console.log(logoUrl);
-
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
@@ -140,7 +138,7 @@ const Header = ({ primaryColor, logoUrl }: any) => {
         sx={{ backgroundColor: primaryColor || grey[800], boxShadow: "none" }}
       >
         <Toolbar sx={{ Height: 75, padding: 2 }}>
-          <Image alt="LOGO" src={logoUrl} width={65} height={45} />
+          {logoUrl && <Image alt="LOGO" src={logoUrl} width={65} height={45} />}
 
           <Search
             sx={{

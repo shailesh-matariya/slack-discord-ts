@@ -19,6 +19,7 @@ export type TMessage = {
   message: string;
   userId: string;
   ts: number;
+  replies: any;
 };
 
 export type TUser = {
@@ -31,6 +32,14 @@ export type TConversation = {
   channel: TChannel;
   messages: TMessage[];
   users: TUser[];
+  replies?: [];
+  updateReplyMessages(messages: []): any;
+  isReplyVisible?: boolean;
 };
 
-export type TDialog = { messageDetail: TMessage; users: TUser[] };
+export type TDialog = {
+  messageDetail: TMessage;
+  users: TUser[];
+  ts?: string;
+  updateReplyMessages(messages: any): any;
+};

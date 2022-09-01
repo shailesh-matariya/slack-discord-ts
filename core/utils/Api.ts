@@ -51,7 +51,7 @@ httpClient.interceptors.request.use(
     if (config.url && config.url.indexOf("?") > -1) {
       // console.log(config.url.indexOf("?"));
       config.url = `${config.url}&url=${url}`;
-      console.log(config.url);
+      // console.log(config.url);
     } else config.url = `${config.url}?url=${url}`;
     return config;
   },
