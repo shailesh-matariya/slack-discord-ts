@@ -20,6 +20,7 @@ export type TMessage = {
   userId: string;
   ts: number;
   replies: any;
+  reactions: any;
 };
 
 export type TUser = {
@@ -33,7 +34,8 @@ export type TConversation = {
   messages: TMessage[];
   users: TUser[];
   replies?: [];
-  updateReplyMessages(messages: []): any;
+  selectedMessage?: any;
+  updateReplyMessages(messages: any): any;
   isReplyVisible?: boolean;
 };
 
@@ -42,4 +44,5 @@ export type TDialog = {
   users: TUser[];
   ts?: string;
   updateReplyMessages(messages: any): any;
+  isReplyVisible: any;
 };

@@ -25,7 +25,7 @@ const Search = styled(Box)(({ theme }) => ({
   width: "100%",
   color: "lightgray",
   margin: "30px 0 15px 0",
-  padding: "0 20px",
+  // padding: "0 20px",
 }));
 
 const SearchIconWrapper = styled(Box)(({ theme }) => ({
@@ -60,7 +60,7 @@ const ChannelTitle = styled(Box)(({ theme }) => ({
 
   [theme.breakpoints.up("md")]: {
     marginBottom: "-5px",
-    backgroundColor: grey[100],
+    // backgroundColor: grey[100],
     borderBottom: "1px solid lightgrey",
     color: grey[800],
   },
@@ -103,7 +103,7 @@ const Channel = ({ tId, id, name, selected }: any) => {
             m: 0,
             borderLeft: 3,
             borderColor: "transparent",
-            padding: "0.55rem 2.2rem",
+            padding: "0.15rem 1.2rem",
             fontSize: "14px",
             fontWeight: 500,
             color: grey[700],
@@ -172,7 +172,7 @@ const Channels = ({ teamId, channels }: any) => {
               }}
             >
               <ChannelTitle
-                sx={{ padding: { md: "24px 40px", xs: "10px 25px" } }}
+                sx={{ padding: { md: "10px 23px", xs: "10px 25px" } }}
               >
                 Channels
               </ChannelTitle>
@@ -187,7 +187,7 @@ const Channels = ({ teamId, channels }: any) => {
                     height: 40,
                     backgroundColor: grey[200],
                     border: 0,
-                    margin: "0 20px",
+                    // margin: "0 20px",
                   }}
                 >
                   {channelList.map((item: TChannel) => (

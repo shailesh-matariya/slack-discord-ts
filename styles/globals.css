@@ -28,6 +28,16 @@ a {
 .MuiListItemText-root.active {
   border-color: #0f5091;
   color: #0f5091;
+  background-color: #ededed;
   font-weight: 500 !important;
-  margin-left: 5px;
+  /* margin-left: 5px; */
 }
+
+.MuiListItem-root { 
+  padding:0
+}
+
+/* .MuiListItemSecondaryAction-root {
+  right:0
+} */
+

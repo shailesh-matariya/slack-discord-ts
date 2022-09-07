@@ -15,7 +15,7 @@ const AppLayout = ({ children }: TProps) => {
       setLogoUrl(resp.data.brand_config.brand_logo_url);
 
       const head = document.getElementsByTagName("head");
-      console.log(resp.data.brand_config.brand_custom_code);
+      // console.log(resp.data.brand_config.brand_custom_code);
 
       return;
     });

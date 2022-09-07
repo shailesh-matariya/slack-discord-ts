@@ -10,7 +10,6 @@ import Channels from "../../core/components/Channels";
 
 const Chat = ({ teamId, chProp, secondaryColor }: any) => {
   const router = useRouter();
-  // console.log();
   const [isReplyVisible, setIsReplyVisible] = useState(false);
   const [channels, setChannels] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -50,7 +49,6 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
       setMessages(resp.data.message_collection.data);
       resp.data.message_collection.data.map((item: any) => {
         setReply(item.replies);
-        // console.log(item.replies);
       });
     });
   };
@@ -67,34 +65,24 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
   }, [teamId, chProp]);
 
   const ConversationWrapper = styled("div")(({ theme }) => ({
-    // overflow: "auto",
-    paddingTop: "20px",
-    // display: "flex",
-    // flexDirection: "column",
+    // paddingTop: "20px",
     alignItems: "center",
-    [theme.breakpoints.up("sm")]: {
-      // maxWidth: "56rem",
-      // minWidth: "56rem",
+    [theme.breakpoints.up("md")]: {
+      width: "93%",
     },
-
-    width: "90%",
+    width: "91%",
   }));
 
   const ReplyWrapper = styled("div")(({ theme }) => ({
     overflow: "auto",
     display: "flex",
     flexDirection: "column",
-    // padding: "0 1rem",
-    // borderBottom: "1px solid lightgrey",
     padding: "0 1rem",
-    // backgroundColor: grey[100],
-    // mb: 2,
     width: "100%",
-    // height: "calc(100vh - 73px)",
   }));
 
-  const updateReplyMessages = (messages: []) => {
-    setReplyMessages(messages);
+  const updateReplyMessages = (message: []) => {
+    setReplyMessages(message);
     setIsReplyVisible(true);
   };
 
@@ -118,7 +106,6 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
           xs={12}
           sx={{
             display: "inset",
-
             backgroundColor: secondaryColor || grey[200],
           }}
         >
@@ -126,14 +113,14 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
             sx={{
               width: { xs: "91%", sm: "100%" },
               mx: "auto",
-              px: { xs: 2.5, sm: 0 },
+              px: { md: 0, sm: 2.5 },
               display: { sm: "flex" },
             }}
           >
             {/* Messages */}
             <Box
               sx={{
-                pr: { md: 2 },
+                // pr: { md: 2 },
                 width:
                   isReplyVisible && replyMessages.length != 0
                     ? { lg: "75%", md: "65%", xs: "50%" }
@@ -173,7 +160,7 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
                       display: "flex",
                       justifyContent: "between",
                       borderBottom: "1px solid lightgrey",
-                      p: 3,
+                      p: 1.5,
                     }}
                   >
                     <Box
@@ -223,8 +210,8 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
                   >
                     <Box
                       sx={{
-                        margin: "2rem 0",
-                        padding: { lg: "0 1.5rem", md: 0 },
+                        margin: "0.5rem 0",
+                        padding: { lg: "0 1rem", md: 0 },
                         width: "100%",
                       }}
                     >
@@ -235,6 +222,7 @@ const Chat = ({ teamId, chProp, secondaryColor }: any) => {
                           users={users}
                           isReplyVisible={isReplyVisible}
                           updateReplyMessages={updateReplyMessages}
+                          // selectedMessage = {}
                         />
                       )}
                     </Box>
